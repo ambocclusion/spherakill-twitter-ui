@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -257,17 +257,17 @@ Prefab:
     - target: {fileID: 224180805121445012, guid: 72204292a83c09d4f868771c16e2c69c,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -109.399994
+      value: -214
       objectReference: {fileID: 0}
     - target: {fileID: 224180805121445012, guid: 72204292a83c09d4f868771c16e2c69c,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: -446.3
+      value: -786.9
       objectReference: {fileID: 0}
     - target: {fileID: 224180805121445012, guid: 72204292a83c09d4f868771c16e2c69c,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: -469.9
+      value: -496.8
       objectReference: {fileID: 0}
     - target: {fileID: 224180805121445012, guid: 72204292a83c09d4f868771c16e2c69c,
         type: 2}
@@ -298,6 +298,21 @@ Prefab:
         type: 2}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114393010581962072, guid: 72204292a83c09d4f868771c16e2c69c,
+        type: 2}
+      propertyPath: AnimationTime
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114394765215932804, guid: 72204292a83c09d4f868771c16e2c69c,
+        type: 2}
+      propertyPath: m_FontData.m_BestFit
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114394765215932804, guid: 72204292a83c09d4f868771c16e2c69c,
+        type: 2}
+      propertyPath: m_FontData.m_MinSize
+      value: 12
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 72204292a83c09d4f868771c16e2c69c, type: 2}
@@ -331,7 +346,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialized: 0
   TwitterFeed: {fileID: 866562015}
-  LoopTime: 10
+  LoopTime: 3
 --- !u!4 &854059460
 Transform:
   m_ObjectHideFlags: 0

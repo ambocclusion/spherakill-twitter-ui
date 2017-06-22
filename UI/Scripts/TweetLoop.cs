@@ -20,11 +20,13 @@ namespace Spacetronaut{
 			TwitterAuth.SetAuth();
 
 			Dictionary<string, string> parameters = new Dictionary<string, string>();
-			parameters["user_id"] = 19738581.ToString();
-			parameters["count"] = 10.ToString();
+			parameters["q"] = "#kentuckyfriedpixels";
+			//parameters["user_id"] = 19738581.ToString();
+			//parameters["count"] = 10.ToString();
 			//parameters["exclude_replies"] = true.ToString();
 			//parameters["include_rts"] = false.ToString();
-			StartCoroutine(Client.Get("statuses/user_timeline", parameters, this.Callback));
+			//StartCoroutine(Client.Get("statuses/user_timeline", parameters, this.Callback));
+			StartCoroutine(Client.Get("search/tweets", parameters, this.Callback));
 
 		}
 
@@ -33,14 +35,14 @@ namespace Spacetronaut{
 
 				initialized = true;
 
-				StatusesUserTimelineResponse Response = JsonUtility.FromJson<StatusesUserTimelineResponse>(response);
+				SearchTweetsResponse Response = JsonUtility.FromJson<SearchTweetsResponse>(response);
 				System.IO.File.WriteAllText("Assets/test.json", response);
 				UnityEditor.AssetDatabase.Refresh();
 
 				List<Spacetronaut.Tweet> tw = new List<Spacetronaut.Tweet>();
 
 				int i = 0;
-				foreach(Twitter.Tweet t in Response.items) {
+				foreach(Twitter.Tweet t in Response.statuses) {
 					Spacetronaut.Tweet newTweet = new Spacetronaut.Tweet();
 					newTweet.userName = t.user.screen_name;
 					newTweet.fullName = t.user.name;
@@ -51,6 +53,8 @@ namespace Spacetronaut{
 				}
 
 				tweets = tw;
+
+                System.IO.File.WriteAllText("Assets/testing.json", response);
 
 				StartCoroutine(TweetRunner(LoopTime));
 			}

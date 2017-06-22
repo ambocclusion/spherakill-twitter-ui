@@ -34,7 +34,7 @@ namespace Spacetronaut {
 			setup["content"].GetComponent<Text>().text = tweetToShow.content;
 
 			if(animate){
-				StartCoroutine(AnimateObjects(lastSetup, (List<GameObject>)setup.Values.ToList(), AnimationTime));
+				StartCoroutine(AnimateObjects(lastSetup, (List<GameObject>)setup.Values.ToList(), AnimationTime, lastTweet == null ? false : lastTweet.userName == tweetToShow.userName ? true : false));
 			}
 			else{
 				for(int i = 0; i < lastSetup.Count; i++){
@@ -66,7 +66,7 @@ namespace Spacetronaut {
 
 		}
 
-		private IEnumerator AnimateObjects(List<GameObject> prevSetup, List<GameObject> newSetup, float time){
+		private IEnumerator AnimateObjects(List<GameObject> prevSetup, List<GameObject> newSetup, float time, bool sameAccount){
 
 			float startTime = Time.time;
 
@@ -79,25 +79,45 @@ namespace Spacetronaut {
 
 				Vector3 dest = ((RectTransform)n.transform).anchoredPosition;
 				newDest.Add(dest);
-				((RectTransform)n.transform).anchoredPosition -= new Vector2(0, ((RectTransform)n.transform).rect.height);
+				((RectTransform)n.transform).anchoredPosition -= new Vector2(((RectTransform)n.transform).rect.width, 0);
 				newStartPos.Add(Vector3.Distance(((RectTransform)n.transform).anchoredPosition, dest));
 
 			}
 
-			while(Vector2.Distance(((RectTransform)newSetup[newSetup.Count - 1].transform).anchoredPosition, newDest[newSetup.Count - 1]) > .01f){
+			if(sameAccount){
+
+				for(int i = 0; i < newSetup.Count - 1; i++){
+
+					newSetup[i].transform.position = prevSetup[i].transform.position;
+					prevSetup[i].SetActive(false);
+
+				}
+
+			}
+
+			float t = 0.0f;
+
+			while (Vector2.Distance(((RectTransform)newSetup[newSetup.Count - 1].transform).anchoredPosition, newDest[newSetup.Count - 1]) > .01f){
 
 				animDifference += Time.deltaTime;
 
-				for(int i = 0; i < prevSetup.Count; i++){
+				int start = !sameAccount ? 0 : prevSetup.Count - 1;
+				int max = !sameAccount ? prevSetup.Count : prevSetup.Count;
 
-					((RectTransform)prevSetup[i].transform).anchoredPosition = Vector2.Lerp(((RectTransform)prevSetup[i].transform).anchoredPosition, new Vector2(((RectTransform)prevSetup[i].transform).anchoredPosition.x, ((RectTransform)prevSetup[i].transform).rect.height), ((animDifference / time) - (i * -.15f)) * Time.deltaTime);					
-					prevSetup[i].GetComponent<CanvasGroup>().alpha = Mathf.Lerp(prevSetup[i].GetComponent<CanvasGroup>().alpha, 0.0f, ((animDifference / (time / 4f)) - (i * -.15f)) * Time.deltaTime);
+				for(int i = start; i < max; i++){
+	
+					t = ((animDifference / time) - (i * -.15f)) * Time.deltaTime;
+
+					((RectTransform)prevSetup[i].transform).anchoredPosition = Vector2.Lerp(((RectTransform)prevSetup[i].transform).anchoredPosition, new Vector2(((RectTransform)prevSetup[i].transform).anchoredPosition.x, ((RectTransform)prevSetup[i].transform).rect.height), Mathf.SmoothStep(0.0f, 1.0f, t));					
+					prevSetup[i].GetComponent<CanvasGroup>().alpha = Mathf.Lerp(prevSetup[i].GetComponent<CanvasGroup>().alpha, 0.0f, ((animDifference / (time / 2f)) - (i * -.15f)) * Time.deltaTime);
 
 				}
 
 				for(int i = 0; i < newSetup.Count; i++){
 
-					((RectTransform)newSetup[i].transform).anchoredPosition = Vector2.Lerp(((RectTransform)newSetup[i].transform).anchoredPosition, newDest[i], ((animDifference / time) - (i * -.15f)) * Time.deltaTime);
+					t = ((animDifference / time) - (i * -.15f)) * Time.deltaTime;
+
+					((RectTransform)newSetup[i].transform).anchoredPosition = Vector2.Lerp(((RectTransform)newSetup[i].transform).anchoredPosition, newDest[i], Mathf.SmoothStep(0.0f, 1.0f, t));
 
 				}
 
